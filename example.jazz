@@ -1,0 +1,5 @@
+fun main : int {}
+
+fun robby : int {
+    return 37;
+}
