@@ -3,11 +3,16 @@
 The Jazz programming language which focuses on the idea of improvisation. The 
 idea is to keep the language extensible and flexible to fit any problem
 
+Jazz only compiles to x86-64 assembly specifically for Linux systems, more
+targets are planned for the future
+
 ## General TODO
 
 [ ] - Compiled
 
 [ ] - Interface with C (aka use C libraries)
+
+[ ] - Add command line options
 
 [ ] - Static and Strongly typed
 
