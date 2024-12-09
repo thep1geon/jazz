@@ -9,10 +9,6 @@
 #include "include/parser.h"
 #include "include/util.h"
 
-
-// TODO: symbol table
-
-
 int main(int argc, char** argv) {
     if (argc < 2) {
         print_usage();

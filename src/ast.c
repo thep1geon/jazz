@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "include/ast.h"
@@ -57,38 +58,42 @@ void ast_free(struct ast* ast) {
     free(ast);
 }
 
-void _pretty_print(struct ast* ast, int indent) {
+void indent(int indent_level) {
+    for (int i = 0; i < indent_level; ++i) printf("  ");
+}
+
+void _pretty_print(struct ast* ast, int indent_level) {
     int i;
-    for (i = 0; i < indent; ++i) printf("  ");
+    indent(indent_level);
 
     switch (ast->tag) {
         case AST_PROGAM: {
             struct ast_program program = ast->as.program;
             puts("PROGRAM:");
             for (i = 0; i < program.decls.len; ++i) {
-                _pretty_print(program.decls.at[i], indent+1);
+                _pretty_print(program.decls.at[i], indent_level+1);
             }
         }; break;
         case AST_FUN_DECL: {
             struct ast_fun_decl fun_decl = ast->as.fun_decl;
             puts("FUN-DECL:");
-            for (i = 0; i < indent+1; ++i) printf("  ");
+            indent(indent_level+1);
             printf("NAME: %.*s\n", fun_decl.name.len, fun_decl.name.ptr);
-            for (i = 0; i < indent+1; ++i) printf("  ");
+            indent(indent_level+1);
             puts("BODY:");
             for (i = 0; i < fun_decl.stmts.len; ++i) {
-                _pretty_print(fun_decl.stmts.at[i], indent+2);
+                _pretty_print(fun_decl.stmts.at[i], indent_level+2);
             }
         }; break;
         case AST_RETURN_STMT: {
             struct ast_return_stmt ret_stmt = ast->as.return_stmt;
-            puts("RETURN:");
-            _pretty_print(ret_stmt.expr, indent+1);
+            puts("RETURN-STMT:");
+            _pretty_print(ret_stmt.expr, indent_level+1);
         }; break;
         case AST_NUMBER: {
             struct ast_number number = ast->as.number;
             puts("NUMBER:");
-            for (i = 0; i < indent+1; ++i) printf("  ");
+            indent(indent_level+1);
             printf("%d\n", number.n);
         } break;
     }
@@ -122,7 +127,11 @@ _start:\n\
         case AST_FUN_DECL: {
             struct ast_fun_decl fun_decl = ast->as.fun_decl; 
             fprintf(file, "%.*s:\n", fun_decl.name.len, fun_decl.name.ptr);
+            fprintf(file, "\tpush rbp\n\tmov rbp, rsp\n");
             for (int i = 0; i < fun_decl.stmts.len; ++i) {
+                if (i == fun_decl.stmts.len - 1) {
+                    fprintf(file, "\tpop rbp\n");
+                }
                 femit(file, fun_decl.stmts.at[i]);
             }
         } break;

@@ -6,5 +6,8 @@ _start:
 	mov    rax, 60
 	syscall
 main:
-	mov rax, 37
+	push rbp
+	mov rbp, rsp
+	pop rbp
+	mov rax, 42
 	ret

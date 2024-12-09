@@ -8,32 +8,71 @@ targets are planned for the future
 
 ## General TODO
 
+### Compiler Features
+
 [ ] - Compiled
 
-[ ] - Interface with C (aka use C libraries)
-
 [ ] - Add command line options
+
+### Language Features
 
 [ ] - Static and Strongly typed
 
 [ ] - Compile time functionality (simliar to Zig)
 
-## Language Features
+[ ] - Interface with C (aka use C libraries)
 
 [ ] - Operator overloading for user-defined types
 
 [ ] - Defer sorta thing
 
-[ ] - Types as first class types themselves
+[ ] - Optionals
 
-[ ] - Functions as first class citizens
+[ ] - Pointers
+
+[ ] - Slices/ Arrays
+
+[ ] - Types being of the type 'type'
 
 [ ] - Tuples
 
 [ ] - Functions
+    [ ] - Functions as types
 
 [ ] - Variables
 
-[ ] - Control flow (for, while, if)
+[ ] - Control flow
+    [ ] - for
+    [ ] - while
+    [ ] - if
+        [ ] - else
 
 [ ] - Arithmetic (constant arithmetic done at compile time)
+    [ ] - Unary
+        [ ] - !
+        [ ] - -
+        [ ] - Bitwise
+            [ ] - ~
+    [ ] - Binary
+        [ ] - Boolean operators
+            [ ] - and
+            [ ] - or
+        [ ] - Bitwise
+            [ ] - <<
+            [ ] - >>
+            [ ] - &
+            [ ] - |
+        [ ] - +
+        [ ] - -
+        [ ] - /
+        [ ] - *
+    [ ] - Grouping
+    [ ] - Order of operations (precedence)
+
+[ ] - User defined types
+    [ ] - Structs
+    [ ] - Enums
+    [ ] - Unions
+
+[ ] - Boolean stuffs
+    [ ] - true/false
