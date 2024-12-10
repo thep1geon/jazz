@@ -13,7 +13,7 @@ struct ast* ast_progam_alloc() {
     return ast;
 }
 
-struct ast* ast_func_decl_alloc(struct string name) {
+struct ast* ast_fun_decl_alloc(struct string name) {
     struct ast* ast = malloc(sizeof(struct ast));
     ast->tag = AST_FUN_DECL;
     ast->as.fun_decl = (struct ast_fun_decl){name, ast_da_alloc(4)};
@@ -34,6 +34,13 @@ struct ast* ast_number_alloc(int n) {
     return ast;
 }
 
+struct ast* ast_unary_op_alloc(struct token tok, struct ast* expr) {
+    struct ast* ast = malloc(sizeof(struct ast));
+    ast->tag = AST_UNARY_OP;
+    ast->as.unary_op = (struct ast_unary_op){tok, expr};
+    return ast;
+}
+
 void ast_free(struct ast* ast) {
     if (!ast) {
         set_gerror(ERROR(ERROR_NULLPTR, "NULL ast passed to ast_free"));
@@ -51,6 +58,10 @@ void ast_free(struct ast* ast) {
         case AST_RETURN_STMT: {
             struct ast_return_stmt ret = ast->as.return_stmt;            
             ast_free(ret.expr);
+        }; break;
+        case AST_UNARY_OP: {
+            struct ast_unary_op unary = ast->as.unary_op;            
+            ast_free(unary.expr);
         }; break;
         case AST_NUMBER: break; // nothing else to free
     }
@@ -90,6 +101,16 @@ void _pretty_print(struct ast* ast, int indent_level) {
             puts("RETURN-STMT:");
             _pretty_print(ret_stmt.expr, indent_level+1);
         }; break;
+        case AST_UNARY_OP: {
+            struct ast_unary_op unary = ast->as.unary_op;
+            puts("UNARY-OP:");
+            indent(indent_level+1);
+            puts("OP:");
+            indent(indent_level+2);
+            struct string lexeme = unary.tok.lexeme;
+            printf("%.*s\n", lexeme.len, lexeme.ptr);
+            _pretty_print(unary.expr, indent_level+1);
+        }; break;
         case AST_NUMBER: {
             struct ast_number number = ast->as.number;
             puts("NUMBER:");
@@ -108,42 +129,3 @@ void pretty_print(struct ast* ast) {
     _pretty_print(ast, 0);
 }
 
-void femit(FILE* file, struct ast* ast) {
-    switch (ast->tag) {
-        case AST_PROGAM: {
-            fprintf(file, "\
-\tsection .text\n\
-\tglobal _start\n\
-_start:\n\
-\tcall   main\n\
-\tmov    rdi, rax\n\
-\tmov    rax, 60\n\
-\tsyscall\n");
-            struct ast_program prog = ast->as.program; 
-            for (int i = 0; i < prog.decls.len; ++i) {
-                femit(file, prog.decls.at[i]);
-            }
-        } break;
-        case AST_FUN_DECL: {
-            struct ast_fun_decl fun_decl = ast->as.fun_decl; 
-            fprintf(file, "%.*s:\n", fun_decl.name.len, fun_decl.name.ptr);
-            fprintf(file, "\tpush rbp\n\tmov rbp, rsp\n");
-            for (int i = 0; i < fun_decl.stmts.len; ++i) {
-                if (i == fun_decl.stmts.len - 1) {
-                    fprintf(file, "\tpop rbp\n");
-                }
-                femit(file, fun_decl.stmts.at[i]);
-            }
-        } break;
-        case AST_RETURN_STMT: {
-            struct ast_return_stmt ret = ast->as.return_stmt; 
-            fprintf(file, "\tmov rax, ");
-            femit(file, ret.expr);
-            fprintf(file, "\tret\n");
-        } break;
-        case AST_NUMBER: {
-            struct ast_number number = ast->as.number; 
-            fprintf(file, "%d\n", number.n);
-        } break;
-    }
-}

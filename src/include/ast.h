@@ -1,8 +1,8 @@
 #ifndef __AST_H
 #define __AST_H
 
-#include <stdio.h>
 
+#include "lex.h"
 #include "string.h"
 #include "ast_da.h"
 
@@ -12,6 +12,7 @@ struct ast {
         AST_FUN_DECL,
         AST_RETURN_STMT,
         AST_NUMBER,
+        AST_UNARY_OP,
     } tag;
 
     union {
@@ -31,21 +32,23 @@ struct ast {
         struct ast_number {
             int n; 
         } number;
+
+        struct ast_unary_op {
+            struct token tok;
+            struct ast* expr;
+        } unary_op;
     } as;
 };
 
 struct ast* ast_progam_alloc();
-struct ast* ast_func_decl_alloc(struct string name);
+struct ast* ast_fun_decl_alloc(struct string name);
 struct ast* ast_return_stmt_alloc(struct ast* expr);
 struct ast* ast_number_alloc(int n);
+struct ast* ast_unary_op_alloc(struct token tok, struct ast* expr);
 
 void ast_free(struct ast* ast);
 
 void _pretty_print(struct ast* ast, int indent);
 void pretty_print(struct ast* ast);
-
-// Part of code generation
-// Maybe this belongs in its own module :P
-void femit(FILE* file, struct ast* ast);
 
 #endif  //__AST_H

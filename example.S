@@ -9,5 +9,7 @@ main:
 	push rbp
 	mov rbp, rsp
 	pop rbp
-	mov rax, 42
+	mov eax, 0
+	neg eax
+	not eax
 	ret

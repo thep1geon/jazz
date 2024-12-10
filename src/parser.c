@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -5,6 +6,17 @@
 #include "include/lex.h"
 #include "include/error.h"
 #include "include/ast.h"
+
+
+struct ast* parse_number(struct token tok);
+struct ast* parse_unary_op(struct token tok);
+struct ast* parse_expr();
+struct ast* parse_return_stmt();
+struct ast* parse_stmt(struct token tok);
+struct ast* parse_fun_decl();
+struct ast* parse_decl(struct token tok);
+struct ast* parse_program();
+struct ast* parse(char* src);
 
 struct ast* parse_number(struct token tok) {
     struct string str = tok.lexeme;
@@ -17,6 +29,10 @@ struct ast* parse_number(struct token tok) {
     return ast_number_alloc(n);
 }
 
+struct ast* parse_unary_op(struct token tok) {
+    return ast_unary_op_alloc(tok, parse_expr());
+}
+
 struct ast* parse_expr() {
     struct token tok;
     struct error error = next_token(&tok);
@@ -26,6 +42,10 @@ struct ast* parse_expr() {
     }
 
     switch (tok.type) {
+        case TOK_TILDA:
+        case TOK_BANG:
+        case TOK_DASH: return parse_unary_op(tok);
+
         case TOK_NUM: return parse_number(tok);
         default: assert(0 && "Unreachable");
     }
@@ -76,7 +96,7 @@ struct ast* parse_fun_decl() {
     }
 
     struct string name = tok.lexeme;
-    struct ast* ast = ast_func_decl_alloc(name);
+    struct ast* ast = ast_fun_decl_alloc(name);
 
     error = next_token(&tok);
     if (error.type != ERROR_NONE) {

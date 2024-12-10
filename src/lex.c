@@ -56,6 +56,21 @@ next_token:
             tok->type = TOK_RBRACE;
             return ERROR_OK;
         } break;
+        case '~': {
+            tok->lexeme = STRING(g_start, g_current - g_start);
+            tok->type = TOK_TILDA;
+            return ERROR_OK;
+        } break;
+        case '-': {
+            tok->lexeme = STRING(g_start, g_current - g_start);
+            tok->type = TOK_DASH;
+            return ERROR_OK;
+        } break;
+        case '!': {
+            tok->lexeme = STRING(g_start, g_current - g_start);
+            tok->type = TOK_BANG;
+            return ERROR_OK;
+        } break;
     }
 
     if (isalpha(c)) {

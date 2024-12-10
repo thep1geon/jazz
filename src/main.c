@@ -8,6 +8,7 @@
 #include "include/ast.h"
 #include "include/parser.h"
 #include "include/util.h"
+#include "include/emit.h"
 
 int main(int argc, char** argv) {
     if (argc < 2) {

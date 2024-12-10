@@ -48,11 +48,11 @@ targets are planned for the future
         [ ] - else
 
 [ ] - Arithmetic (constant arithmetic done at compile time)
-    [ ] - Unary
-        [ ] - !
-        [ ] - -
-        [ ] - Bitwise
-            [ ] - ~
+    [x] - Unary
+        [x] - !
+        [x] - -
+        [x] - Bitwise
+            [x] - ~
     [ ] - Binary
         [ ] - Boolean operators
             [ ] - and
@@ -66,7 +66,7 @@ targets are planned for the future
         [ ] - -
         [ ] - /
         [ ] - *
-    [ ] - Grouping
+    [ ] - Grouping with parenthesis
     [ ] - Order of operations (precedence)
 
 [ ] - User defined types

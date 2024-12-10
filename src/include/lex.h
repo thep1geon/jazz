@@ -17,6 +17,9 @@ struct token {
         TOK_SEMICOLON,  // ;
         TOK_LBRACE,     // {
         TOK_RBRACE,     // }
+        TOK_TILDA,      // ~
+        TOK_DASH,       // -
+        TOK_BANG,       // !
     } type;
 };
 
