@@ -6,10 +6,7 @@ _start:
 	mov    rax, 60
 	syscall
 main:
-	push rbp
-	mov rbp, rsp
-	pop rbp
-	mov eax, 0
-	neg eax
-	not eax
+	mov eax, 42
+	ret
+	mov eax, 42
 	ret

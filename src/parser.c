@@ -75,7 +75,8 @@ struct ast* parse_stmt(struct token tok) {
     }
 
     if (tok.type != TOK_SEMICOLON) {
-        set_gerror(ERROR(ERROR_SYNTAX, "Expected semicolon"));
+        set_gerror(ERROR(ERROR_SYNTAX, "Expected semicolon", tok.loc));
+        ast_free(ast);
         return NULL;
     }
 
@@ -91,7 +92,7 @@ struct ast* parse_fun_decl() {
     }
 
     if (tok.type != TOK_IDENT) {
-        set_gerror(ERROR(ERROR_SYNTAX, "Expected identifier"));
+        set_gerror(ERROR(ERROR_SYNTAX, "Expected identifier", tok.loc));
         return NULL;
     }
 
@@ -104,7 +105,7 @@ struct ast* parse_fun_decl() {
         return NULL;
     }
     if (tok.type != TOK_COLON) {
-        set_gerror(ERROR(ERROR_SYNTAX, "Expected Colon"));
+        set_gerror(ERROR(ERROR_SYNTAX, "Expected Colon", tok.loc));
         ast_free(ast);
         return NULL;
     }
@@ -115,7 +116,7 @@ struct ast* parse_fun_decl() {
         return NULL;
     }
     if (tok.type != TOK_INT) {
-        set_gerror(ERROR(ERROR_SYNTAX, "Expected return type"));
+        set_gerror(ERROR(ERROR_SYNTAX, "Expected return type", tok.loc));
         ast_free(ast);
         return NULL;
     }
@@ -126,14 +127,14 @@ struct ast* parse_fun_decl() {
         return NULL;
     }
     if (tok.type != TOK_LBRACE) {
-        set_gerror(ERROR(ERROR_SYNTAX, "Expected Left Brace"));
+        set_gerror(ERROR(ERROR_SYNTAX, "Expected Left Brace", tok.loc));
         ast_free(ast);
         return NULL;
     }
     
     while (next_token(&tok).type == ERROR_NONE && tok.type != TOK_RBRACE) {
         if (tok.type == TOK_EOF) {
-            set_gerror(ERROR(ERROR_SYNTAX, "Missing closing brace"));
+            set_gerror(ERROR(ERROR_SYNTAX, "Missing closing brace", tok.loc));
             ast_free(ast);
             return NULL;
         }

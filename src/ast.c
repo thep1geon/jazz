@@ -43,7 +43,7 @@ struct ast* ast_unary_op_alloc(struct token tok, struct ast* expr) {
 
 void ast_free(struct ast* ast) {
     if (!ast) {
-        set_gerror(ERROR(ERROR_NULLPTR, "NULL ast passed to ast_free"));
+        set_gerror(ERROR(ERROR_NULLPTR, "NULL ast passed to ast_free", {0}));
     }
 
     switch (ast->tag) {
@@ -122,7 +122,7 @@ void _pretty_print(struct ast* ast, int indent_level) {
 
 void pretty_print(struct ast* ast) {
     if (!ast) {
-        set_gerror(ERROR(ERROR_NULLPTR, "NULL ast passed to pretty_print"));
+        set_gerror(ERROR(ERROR_NULLPTR, "NULL ast passed to pretty_print", {0}));
         return;
     }
 

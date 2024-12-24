@@ -13,11 +13,7 @@ void emit_ast_program(FILE* file, struct ast_program ast) {
 
 void emit_ast_fun_decl(FILE* file, struct ast_fun_decl ast) {
     fprintf(file, "%.*s:\n", ast.name.len, ast.name.ptr);
-    fprintf(file, "\tpush rbp\n\tmov rbp, rsp\n");
     for (int i = 0; i < ast.stmts.len; ++i) {
-        if (i == ast.stmts.len - 1) {
-            fprintf(file, "\tpop rbp\n");
-        }
         femit(file, ast.stmts.at[i]);
     }
 }
@@ -32,9 +28,7 @@ void emit_ast_number(FILE* file, struct ast_number ast) {
 }
 
 void emit_ast_unary_op(FILE* file, struct ast_unary_op ast) {
-    struct token tok = ast.tok; 
-
-    switch (tok.type) {
+    switch (ast.tok.type) {
         case TOK_DASH: {
             femit(file, ast.expr);
             fprintf(file, "\tneg eax\n");

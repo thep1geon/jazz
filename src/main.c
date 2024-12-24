@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 
     struct ast* ast = parse(contents.ptr);
     if (!ast) {
-        error_print(get_gerror());
+        error_print(gerror());
         goto end;
     }
 

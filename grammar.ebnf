@@ -8,6 +8,4 @@ stmt            = return-stmt ;
 
 return-stmt     = "return" expr ;
 
-expr            = unary_op expr | number ;
-
-unary_op        = "~" | "-" | "!" ;
+expr            = ("~" | "-" | "!") expr | number ;

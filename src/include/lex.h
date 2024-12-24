@@ -1,9 +1,11 @@
 #ifndef __LEX_H
 #define __LEX_H
 
+#include "loc.h"
 #include "string.h"
 
 struct token {
+    struct location loc;
     struct string lexeme;
 
     enum {
@@ -17,11 +19,14 @@ struct token {
         TOK_SEMICOLON,  // ;
         TOK_LBRACE,     // {
         TOK_RBRACE,     // }
+
         TOK_TILDA,      // ~
         TOK_DASH,       // -
         TOK_BANG,       // !
     } type;
 };
+
+void token_print(struct token);
 
 void lex_init(char* ptr);
 struct error next_token(struct token* tok);
